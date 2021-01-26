@@ -6,7 +6,10 @@ import { View, Platform } from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack'
 import {createAppContainer} from 'react-navigation'
 
-const Directorynavigator = createStackNavigator(
+import Home from '../home/Home.component'
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
+const DirectoryNavigator = createStackNavigator(
     {
         Directory:{ screen: Directory},
         CampsiteInfo:{ screen: CampsiteInfo}
@@ -28,7 +31,35 @@ const Directorynavigator = createStackNavigator(
     }
 );
 
-const AppNavigator = createAppContainer(Directorynavigator);
+const HomeNavigator = createStackNavigator(
+    {
+        Home: { screen: Home }
+    },
+    {
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#5637DD'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    }
+);
+
+const MainNavigator = createDrawerNavigator(
+    {
+        Home: { screen: HomeNavigator },
+        Directory: { screen: DirectoryNavigator }
+    },
+    {
+        drawerBackgroundColor: '#CEC8FF'
+    }
+);
+
+
+const AppNavigator = createAppContainer(MainNavigator);
 
 class Main extends React.Component {
     render(){
