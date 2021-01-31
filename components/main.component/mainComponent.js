@@ -1,18 +1,25 @@
 import React from 'react';
 import Directory from '../directory.component/directory.component'
 import CampsiteInfo from '../infoComponent/campsiteInfo.component'
+
+
+
 import { View, Platform } from 'react-native'
 
 import { createStackNavigator } from 'react-navigation-stack'
 import {createAppContainer} from 'react-navigation'
 
 import Home from '../home/Home.component'
+import About from '../About/About.Component';
+import Contact from '../Contact/Contact.Component'
+
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 const DirectoryNavigator = createStackNavigator(
     {
         Directory:{ screen: Directory},
-        CampsiteInfo:{ screen: CampsiteInfo}
+        CampsiteInfo:{ screen: CampsiteInfo},
+
     },
     {
         initialRouteName: 'Directory',
@@ -31,6 +38,8 @@ const DirectoryNavigator = createStackNavigator(
     }
 );
 
+
+
 const HomeNavigator = createStackNavigator(
     {
         Home: { screen: Home }
@@ -48,10 +57,49 @@ const HomeNavigator = createStackNavigator(
     }
 );
 
+
+const AboutNavigator = createStackNavigator(
+    {
+        About: { screen: About }
+    },
+    {
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#5637DD'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    }
+);
+
+const ContactNavigator = createStackNavigator(
+    {
+        Contact: { screen: Contact }
+    },
+    {
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#5637DD'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    }
+);
+
 const MainNavigator = createDrawerNavigator(
     {
         Home: { screen: HomeNavigator },
-        Directory: { screen: DirectoryNavigator }
+        Directory: { screen: DirectoryNavigator },
+        About: { screen: AboutNavigator },
+        Contact: { screen: ContactNavigator }
+
+
     },
     {
         drawerBackgroundColor: '#CEC8FF'
