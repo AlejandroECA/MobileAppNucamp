@@ -1,13 +1,15 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import { Card } from 'react-native-elements';
+import {Text, View, ScrollView, FlatList } from 'react-native';
+import { Card, Icon } from 'react-native-elements';
 import {CAMPSITES} from '../dataFolder/campsites'
+import { COMMENTS } from '../dataFolder/comments'
 
 
+const RenderCampsite = (props)=>{
 
-const RenderCampsite = ({campsite})=>{
+    const {campsite, favorite, markFavorite} = props
 
-    if (campsite) {
+        if (campsite) {
         return(
             <Card
                 featuredTitle={campsite.name}
@@ -15,11 +17,46 @@ const RenderCampsite = ({campsite})=>{
                 <Text style={{margin:10}}>
                     {campsite.description}
                 </Text>
+                <Icon 
+                name={favorite? 'heart':'heart-o'}
+                type='font-awesome'
+                color={favorite? 'red':'lightblue'}
+                raised
+                reverse
+                onPress={ markFavorite() }
+                />
             </Card>
+
         )
     } else{
         return <View />
     }
+}
+
+const RenderComments = ({comments}) => {
+
+    const renderCommentItem = ({item}) => {
+        return (
+            <View style={{margin: 10}}>
+                <Text style={{fontSize:14}}>{item.text}</Text>
+                <Text style={{fontSize:12}}>{item.rating} Stars</Text>
+                <Text style={{fontSize:12}}>{` -- ${item.author}, ${item.date}`}</Text>
+            </View>
+        )
+    }
+
+    return (
+
+        <Card title='Comments'>
+            <FlatList
+                data={comments}
+                renderItem={renderCommentItem}
+                keyExtractor={item => item.id.toString()}
+            />
+        </Card>
+
+    )
+
 }
 
 
@@ -27,8 +64,16 @@ class CampsiteInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            campsites: CAMPSITES
+            campsites: CAMPSITES,
+            comments: COMMENTS,
+            favorite: false,
         };
+    }
+
+    markFavorite = async() => {
+        await this.setState((state, props) => ({
+            favorite: !state.favorite
+        }))
     }
 
 
@@ -38,8 +83,17 @@ class CampsiteInfo extends React.Component {
     render(){
         const campsiteId = this.props.navigation.getParam('campsiteId');
         const campsite =  this.state.campsites.filter(campsite => campsite.id === campsiteId)[0];
+        const comments = this.state.comments.filter(comment => comment.campsiteId === campsiteId);
+
         return(
-            <RenderCampsite campsite={campsite} />
+
+            <ScrollView>
+                <RenderCampsite campsite={campsite} 
+                favorite={this.state.favorite}
+                markFavorite={() => this.markFavorite}/>
+                <RenderComments comments={comments} />
+            </ScrollView>
+
         )
     }
 
