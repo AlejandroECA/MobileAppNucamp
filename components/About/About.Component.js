@@ -1,18 +1,16 @@
 import React from 'react';
 import { ScrollView, Text, FlatList } from 'react-native';
 import {Card, ListItem} from 'react-native-elements';
-import { PARTNERS } from '../dataFolder/partners';
+
+import { connect } from 'react-redux';
+import { baseUrl } from '../../shared/url/baseUrl'
+import Loading from '../loading/Loading.Component'
 
 
 
 class About extends React.Component {
     constructor(props){
         super(props);
-
-        this.state = {
-            partners: PARTNERS
-        }
-
         
     }
     
@@ -40,12 +38,37 @@ class About extends React.Component {
                     title={item.name}
                     subtitle={item.description}
                     leftAvatar={{
-                        source: require('../../shared/images/bootstrap-logo.png')
+                        source: {
+                            uri:
+                            baseUrl + item.image
+                        }
                     }}
                 /> 
             )
         }
 
+        if (this.props.partners.isLoading) {
+            return (
+                <ScrollView>
+                    <Mission />
+                    <Card
+                        title='Community Partners'>
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            );
+        }
+        if (this.props.partners.errMess) {
+            return (
+                <ScrollView>
+                    <Mission />
+                    <Card
+                        title='Community Partners'>
+                        <Text>{this.props.partners.errMess}</Text>
+                    </Card>
+                </ScrollView>
+            );
+        }
         return(
 
             <ScrollView>
@@ -55,7 +78,7 @@ class About extends React.Component {
                 title='community partners'
                 >
                     <FlatList
-                        data={this.state.partners}
+                        data={this.props.partners.partners}
                         renderItem={renderPartner}
                         keyExtractor={ item => item.id.toString()}
                     />
@@ -66,4 +89,10 @@ class About extends React.Component {
     }
 }
 
-export default About
+const mapStateToProps = state => {
+    return{
+        partners: state.partners
+    }
+}
+
+export default connect(mapStateToProps)(About)

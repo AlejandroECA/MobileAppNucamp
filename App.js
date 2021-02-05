@@ -4,10 +4,17 @@ import { StyleSheet, View, Image } from 'react-native';
 import Main from './components/main.component/mainComponent'
 import {Card} from 'react-native-elements'
 
+import { Provider } from 'react-redux';
+import { ConfigureStore } from './redux/ConfigureStore'
+
+const store =  ConfigureStore()
+
 export default function App() {
   return (
     <View style={styles.container}>
-      <Main  />
+      <Provider store={store}>
+        <Main  />
+      </Provider>
     </View>
   );
 }
