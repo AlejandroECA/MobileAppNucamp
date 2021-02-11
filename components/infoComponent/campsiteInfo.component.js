@@ -17,6 +17,7 @@ import { postFavorite , postComment } from "../../redux/ActionCreators";
   
 
 const RenderCampsite = (props) => {
+    
   const { campsite, favorite, markFavorite, onShowModal } = props;
 
   if (campsite) {
