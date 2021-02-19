@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/url/baseUrl'
 import Loading from '../loading/Loading.Component'
 
+import * as Animatable from 'react-native-animatable';
 
 
 class About extends React.Component {
@@ -61,29 +62,32 @@ class About extends React.Component {
         if (this.props.partners.errMess) {
             return (
                 <ScrollView>
-                    <Mission />
-                    <Card
-                        title='Community Partners'>
-                        <Text>{this.props.partners.errMess}</Text>
-                    </Card>
+                    <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                        <Mission />
+                        <Card
+                            title='Community Partners'>
+                            <Text>{this.props.partners.errMess}</Text>
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
         return(
 
             <ScrollView>
-                <this.Mission />
+                <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                    <this.Mission />
 
-                <Card
-                title='community partners'
-                >
-                    <FlatList
-                        data={this.props.partners.partners}
-                        renderItem={renderPartner}
-                        keyExtractor={ item => item.id.toString()}
-                    />
-                </Card>
-
+                    <Card
+                    title='community partners'
+                    >
+                        <FlatList
+                            data={this.props.partners.partners}
+                            renderItem={renderPartner}
+                            keyExtractor={ item => item.id.toString()}
+                        />
+                    </Card>
+                </Animatable.View>
             </ScrollView>
         )
     }
